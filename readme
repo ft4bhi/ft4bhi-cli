@@ -1,0 +1,24 @@
+3. Link the CLI Globally
+Inside your project directory, run:
+
+
+```
+npm link
+```
+
+```
+ft4bhi init        # Initialize a new UI project
+ft4bhi add button  # Add a button component
+```
+
+```
+npm publish --access public
+```
+
+```
+npx @ft4bhi/ui-cli init
+```
+
+```
+npx @ft4bhi/ui-cli add button
+```
