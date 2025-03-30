@@ -1,6 +1,6 @@
 {
   "name": "@ft4bhi/ui-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CLI for @ft4bhi/ui – scaffolding and adding UI components",
   "main": "cli.js",
   "bin": {
