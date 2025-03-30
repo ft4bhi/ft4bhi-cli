@@ -15,14 +15,21 @@ program
   .description('Initialize a new UI project using @ft4bhi/ui templates')
   .action(() => {
     console.log('Initializing new project...');
-    
-    // Define the path to your project template folder.
-    // Create a folder called "templates/project" in your project directory.
-    const templateDir = path.join(__dirname, 'templates', 'project');
-    const destDir = process.cwd(); // The directory where the user runs the command
 
+    // Define source paths
+    const templateDir = path.join(__dirname, 'templates', 'project');
+    const libDir = path.join(__dirname, 'templates', 'lib'); // Path to lib folder
+    const destDir = process.cwd(); // The directory where the user runs the command
+    const destLibDir = path.join(destDir, 'src', 'lib'); // lib should be inside src
+
+    // Copy project template
     fs.copy(templateDir, destDir)
-      .then(() => console.log('Project initialized successfully!'))
+      .then(() => {
+        console.log('Project initialized successfully!');
+        // Copy lib folder separately if it exists
+        return fs.existsSync(libDir) ? fs.copy(libDir, destLibDir) : Promise.resolve();
+      })
+      .then(() => console.log('Lib folder copied successfully inside src/!'))
       .catch(err => {
         console.error('Error during initialization:', err);
         process.exit(1);
@@ -35,21 +42,27 @@ program
   .description('Add a new UI component (e.g., button, card) to your project')
   .action((component) => {
     console.log(`Adding ${component} component...`);
-    
-    // Define the mapping to component templates.
-    // Create a folder for each component under "templates/components"
+
+    // Define source paths
     const componentTemplateDir = path.join(__dirname, 'templates', 'components', component);
+    const libDir = path.join(__dirname, 'templates', 'lib'); // Path to lib folder
     if (!fs.existsSync(componentTemplateDir)) {
       console.error(`Component template for "${component}" not found.`);
       process.exit(1);
     }
-    
-    // Define where the component should be copied.
-    // For example, copy to "src/components/<component>" in the user's project
-    const destDir = path.join(process.cwd(), 'src', 'components', component);
-    
-    fs.copy(componentTemplateDir, destDir)
-      .then(() => console.log(`${component} component added successfully!`))
+
+    // Define destination paths
+    const destComponentDir = path.join(process.cwd(), 'src', 'components', component);
+    const destLibDir = path.join(process.cwd(), 'src', 'lib'); // lib should be inside src
+
+    // Copy component
+    fs.copy(componentTemplateDir, destComponentDir)
+      .then(() => {
+        console.log(`${component} component added successfully!`);
+        // Copy lib folder separately if it exists
+        return fs.existsSync(libDir) ? fs.copy(libDir, destLibDir) : Promise.resolve();
+      })
+      .then(() => console.log('Lib folder copied successfully inside src/!'))
       .catch(err => {
         console.error(`Error adding component ${component}:`, err);
         process.exit(1);
