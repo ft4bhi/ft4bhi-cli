@@ -26,3 +26,23 @@ const Avatar: React.FC<AvatarProps> = ({ src, alt, size = "medium", name, status
   return (
     <div className="relative inline-flex items-center">
       {src ? (
+        <img src={src} alt={alt || "Avatar"} className={`rounded-full object-cover ${sizeClasses[size]}`} />
+      ) : (
+        <div
+          className={`rounded-full bg-gray-300 flex items-center justify-center font-semibold text-gray-700 ${sizeClasses[size]}`}
+        >
+          {initials}
+        </div>
+      )}
+      {status && (
+        <span
+          className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
+            status === "online" ? "bg-green-500" : "bg-gray-400"
+          }`}
+        ></span>
+      )}
+    </div>
+  );
+};
+
+export default Avatar;
